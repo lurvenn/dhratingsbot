@@ -1,6 +1,6 @@
 from board import Board
 from run import Run
-import srcomapi
+import srcomapi, srcomapi.datatypes as dt
 api = srcomapi.SpeedrunCom(); api.debug = 1
 f = open("kod any.txt", "r")
 
@@ -39,16 +39,28 @@ print(leaderboard)
 gameid = "3dxz351y"
 
 game = api.search(srcomapi.datatypes.Game, {"name": "dishonored"})[0]
+dh1_runs = {}
 
-print(" category test: " + str(game.categories[1].variables))
-list = []
-for x in game.runs:
-    if x.categories.get("Knife of Dunwall"):
-        list.append(x)
-print(x)
+dh1_runs[game.categories[1].name] = dt.Leaderboard(api, data=api.get("leaderboards/{gameidentification}/category/{a1}?embed=variables".format(gameidentification = game.id, a1  = game.categories[1].id)))
+kod = dh1_runs["Knife of Dunwall"]
+print("1234 " + str(kod.variables))
+print(kod.variables)
+for x in kod.runs:
+    print(x)
 
-print("asdf" + str(list))
-gameid = "3dxz351y"
-dh_runs = {}
+#print(kod.runs[1][comment])
+#print(game.categories[1].runs)
 
-print(dh_runs)
+# print("lmao " + str(game.categories[1]))
+# print(" category test: " + str(game.categories[1].variables))
+# list = []
+# for x in game.runs:
+#     if x.categories.get("Knife of Dunwall"):
+#         list.append(x)
+# print(x)
+#
+# print("asdf" + str(list))
+# gameid = "3dxz351y"
+# dh_runs = {}
+#
+# print(dh_runs)

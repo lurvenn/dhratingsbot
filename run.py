@@ -15,7 +15,7 @@ class Run:
         else:
             mss = secondlist[1]
 
-        self.time = int(mss)+int(second)*1000+int(minute)*60*1000
+        self.time = (int(mss)+int(second)*1000+int(minute)*60*1000)/1000
         self.score = 0
 
     def __str__(self):
