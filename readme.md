@@ -1,4 +1,4 @@
-waddup gamers
+# waddup gamers
 
 kod any.txt is a test file
 
