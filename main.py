@@ -18,19 +18,19 @@ for x in importlist:
 
 # unit tests
 # runs
-print("\n # test of runs, not part of a leaderboard")
-print(importlist[0][1])
-for x in runlist:
-    print(x)
-
-# boards
-print("\n # test of boards")
-
-leaderboard = Board()
-for x in runlist:
-    leaderboard.addRun(x)
-
-print(leaderboard)
+# print("\n # test of runs, not part of a leaderboard")
+# print(importlist[0][1])
+# for x in runlist:
+#     print(x)
+#
+# # boards
+# print("\n # test of boards")
+#
+# leaderboard = Board()
+# for x in runlist:
+#     leaderboard.addRun(x)
+#
+# print(leaderboard)
 
 
 # srcom api test
@@ -46,7 +46,7 @@ kod = dh1_runs["Knife of Dunwall"]
 print("1234 " + str(kod.variables))
 print(kod.variables)
 for x in kod.runs:
-    print(x)
+    print(x[run])
 
 #print(kod.runs[1][comment])
 #print(game.categories[1].runs)
