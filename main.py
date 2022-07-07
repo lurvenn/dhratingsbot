@@ -46,7 +46,7 @@ kod = dh1_runs["Knife of Dunwall"]
 print("1234 " + str(kod.variables))
 print(kod.variables)
 for x in kod.runs:
-    print(x[run])
+    print(x["run"])
 
 #print(kod.runs[1][comment])
 #print(game.categories[1].runs)
