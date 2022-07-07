@@ -1,4 +1,6 @@
 from run import Run
+
+## want this to contain the runs from different categories, might be a bit hard codey
 class Board:
     def __init__(self):
         self.runs = []

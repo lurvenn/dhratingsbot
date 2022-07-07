@@ -2,6 +2,8 @@ class Run:
     def __init__(self, runner, time):
         self.runner = runner
 
+
+        ## terrible but cba to rewrite until i know what format the src api uses
         minutelist = time.split(":")
         minute = minutelist[0]
 
@@ -17,10 +19,13 @@ class Run:
         self.score = 0
 
     def __str__(self):
-        return self.runner + " " + str(self.time) + " " + str(self.score)
+        return "runner: " + self.runner + ", time: " + str(self.time) + ", score: " + str(self.score)
 
     def __gt__(self, other):
         return self.time > other.getTime()
+
+    def __eq__(self, other):
+        return self.time == other.getTime()
 
     def getRunner(self):
         return self.runner
