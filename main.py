@@ -1,7 +1,6 @@
-# from board import Board
 from run import Run
 import srcomapi, srcomapi.datatypes as dt
-
+from board import Board
 
 def main():
     api = srcomapi.SpeedrunCom()
@@ -45,21 +44,25 @@ def main():
         )
     
     players = {}
-    ## Kod handling
     for p2 in dh1_runs.keys():
         for p in dh1_runs[p2]["players"]["data"]:
             if p["rel"] != "guest":
                 players[p["id"]] = p 
-   
-        kod = dh1_runs["Knife of Dunwall"]
+    # for k in players.keys():
+    #     print(players[k]["names"]["international"])
+
+        
+    ## Kod handling
+
+    kod = dh1_runs["Knife of Dunwall"]
 
     kod_variables = kod["variables"]["data"]
 
     assert len(kod_variables) == 1
     kod_category = kod_variables[0]
 
-    kod_category_values =  {'5q8jr6yl': 'Any%', 'mlnpkwo1': 'All Collectibles', '810g9gol': 'Non-Lethal / Ghost', '9qjvev7q': '100%'}
-    kod_categories = {p : [] for p in kod_category_values.keys() }
+    kod_category_names =  {'5q8jr6yl': 'Any%', 'mlnpkwo1': 'All Collectibles', '810g9gol': 'Non-Lethal / Ghost', '9qjvev7q': '100%'}
+    kod_categories = {p : [] for p in kod_category_names.keys() }
     
     for run in kod["runs"]:
         run = run["run"]
@@ -74,6 +77,17 @@ def main():
         # TODO: Also handle guests?
         print(f"{label}: {runner_name}, {time}")
 
+    for run in kod["runs"]:
+        run = run["run"]
+        for key in kod_categories.keys():
+            if list(run["values"].values())[0] == key:
+                kod_categories[key].append(run)
+    
+    testboard = Board()
+    for p in kod_categories["5q8jr6yl"]:
+        playername = players[p["players"][0]["id"]]
+        testboard.addRun(Run(playername["names"]["international"], p["times"]["primary_t"]))
+    print(testboard)
     # print(kod.runs[1][comment])
     # print(game.categories[1].runs)
 

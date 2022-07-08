@@ -7,7 +7,7 @@ class Board:
 
     def addRun(self, run):
         self.runs.append(run)
-        self.calculatescore()
+        self.calculateBaseScore()
 
     def __str__(self):
         output = ""
@@ -15,9 +15,9 @@ class Board:
             output+= str(x) + "\n"
         return output
 
-    def calculatescore(self):
+    def calculateBaseScore(self):
         self.runs.sort()
-        comp= Run("mathtest","99:99.999")
+        comp= Run("mathtest",9999999999999999)
         for x in self.runs:
             if x.getTime() < comp.getTime():
                 comp = x
