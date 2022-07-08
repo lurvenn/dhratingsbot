@@ -33,24 +33,34 @@ def main():
 
     # gameid = "3dxz351y"
 
+
+    ## Split up the categories
     game = api.search(srcomapi.datatypes.Game, {"name": "dishonored"})[0]
     dh1_runs = {}
-    
-    for i in game.categories:
-        dh1_runs[i.name] = api.get(
+
+    for p in game.categories:
+        dh1_runs[p.name] = api.get(
             f"leaderboards/{game.id}/"
-            f"category/{i.id}?embed=variables,players,platform"
+            f"category/{p.id}?embed=variables,players,platform"
         )
+    
+    players = {}
+    ## Kod handling
+    for p2 in dh1_runs.keys():
+        for p in dh1_runs[p2]["players"]["data"]:
+            if p["rel"] != "guest":
+                players[p["id"]] = p 
+   
+        kod = dh1_runs["Knife of Dunwall"]
 
-    kod = dh1_runs["Knife of Dunwall"]
+    kod_variables = kod["variables"]["data"]
 
-    variables = kod["variables"]["data"]
+    assert len(kod_variables) == 1
+    kod_category = kod_variables[0]
 
-    assert len(variables) == 1
-    kod_category = variables[0]
-
-    players = {p["id"]: p for p in kod["players"]["data"]}
-
+    kod_category_values =  {'5q8jr6yl': 'Any%', 'mlnpkwo1': 'All Collectibles', '810g9gol': 'Non-Lethal / Ghost', '9qjvev7q': '100%'}
+    kod_categories = {p : [] for p in kod_category_values.keys() }
+    
     for run in kod["runs"]:
         run = run["run"]
 
@@ -61,7 +71,6 @@ def main():
         runner_name = players[runner_id]["names"]["international"]
 
         time = run["times"]["primary_t"]
-
         # TODO: Also handle guests?
         print(f"{label}: {runner_name}, {time}")
 
@@ -69,7 +78,7 @@ def main():
     # print(game.categories[1].runs)
 
     # print("lmao " + str(game.categories[1]))
-    # print(" category test: " + str(game.categories[1].variables))
+    # print(" category test: " + str(game.categories[1].kod_variables))
     # list = []
     # for x in game.runs:
     #     if x.categories.get("Knife of Dunwall"):
