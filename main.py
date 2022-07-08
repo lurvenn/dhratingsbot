@@ -7,10 +7,10 @@ def main():
     api = srcomapi.SpeedrunCom()
     api.debug = 1
 
-    with open("kod any.txt", "r") as f:
-        importlist = [x.split("\t") for x in f]
+    # with open("kod any.txt", "r") as f:
+    #     importlist = [x.split("\t") for x in f]
 
-    runlist = [(Run(x[0], x[1])) for x in importlist]
+    # runlist = [(Run(x[0], x[1])) for x in importlist]
 
     # unit tests
     # runs
@@ -35,11 +35,12 @@ def main():
 
     game = api.search(srcomapi.datatypes.Game, {"name": "dishonored"})[0]
     dh1_runs = {}
-
-    dh1_runs[game.categories[1].name] = api.get(
-        f"leaderboards/{game.id}/"
-        f"category/{game.categories[1].id}?embed=variables,players,platform"
-    )
+    
+    for i in game.categories:
+        dh1_runs[i.name] = api.get(
+            f"leaderboards/{game.id}/"
+            f"category/{i.id}?embed=variables,players,platform"
+        )
 
     kod = dh1_runs["Knife of Dunwall"]
 
