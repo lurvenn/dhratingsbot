@@ -8,11 +8,17 @@ class Board:
 
 
     def addRun(self, run):
-        # if len(self.runs) > 0:
-        #     for r in self.runs:
-        #         if r.getRunner() == run.getRunner():
-        #             break
-        self.runs.append(run)
+        if len(self.runs) > 0:
+            exists = False
+            for r in self.runs:
+                if r.getRunner() == run.getRunner():
+                    exists = True
+            if not exists:
+                self.runs.append(run)
+
+        else:
+            self.runs.append(run)
+
 
 
     def __str__(self):
