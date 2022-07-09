@@ -8,21 +8,29 @@ class Board:
 
 
     def addRun(self, run):
+        # if len(self.runs) > 0:
+        #     for r in self.runs:
+        #         if r.getRunner() == run.getRunner():
+        #             break
         self.runs.append(run)
+
+
+    def __str__(self):
         self.calculateBaseScore()
         self.calculateBonus()
 
-    def __str__(self):
         output = "Board: \n"
+        i = 0
         for x in self.runs:
-            output+= str(x) + "\n"
+            i+=1
+            output+= str(i) +  " " +str(x) + "\n"
         return output
 
     # Bonus based on your relative time to rekky, 5k added if run is faster than than 1/bonus compared to rekky
     def calculateBonus(self):
         rekky = sorted(self.runs)[0]
         for x in self.runs:
-            if x.getScore() > float(rekky.getScore()/self.bonus):
+            if x.getScore() >= rekky.getScore()/self.bonus:
                 x.setTimeBonus(True)
                 
 
