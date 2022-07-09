@@ -35,37 +35,26 @@ def main():
     # Kod handling
 
     kod = dh1_runs["Knife of Dunwall"]
-
-    kod_variables = kod["variables"]["data"]
-
-    assert len(kod_variables) == 1
-
     kod_categories = {p : [] for p in kod_category_names.keys() }
     
-    # kod_category = kod_variables[0]
-    # for run in kod["runs"]:
-    #     run = run["run"]
-
-    #     category_value = run["values"][kod_category["id"]]
-    #     label = kod_category["values"]["values"][category_value]["label"]
-
-    #     runner_id = run["players"][0]["id"]
-    #     runner_name = players[runner_id]["names"]["international"]
-
-    #     time = run["times"]["primary_t"]
-    #     # TODO: Also handle guests?
-    #     print(f"{label}: {runner_name}, {time}")
-
-    for run in kod["runs"]:
-        run = run["run"]
-        for x in kod["variables"]["data"]:
-            if x["is-subcategory"] == True:
-                for b in list(x["values"]["values"].keys()):
-                    if list(run["values"].values())[0] == b:
-                       kod_categories[b].append(run)
-            
+    # Category Sort: Appending of runs to each category list
+    for r in kod["runs"]:
+        run = r["run"]
+        
+        # Get run category string value
+        run_category = list(run["values"].values())[0]
+        # Get all category string values
+        categories = list(kod["variables"]["data"][0]["values"]["values"].keys())
+        
+        # Append run to category list where category values match
+        for category in categories:
+            if run_category == category:
+                kod_categories[category].append(run)
+    # End of Category Sort -Luke / Xais
+  
     kodAnyBoard = Board(2)
-    for p in kod_categories["5q8jr6yl"]:
+    for p in kod_categories["mlnpkwo1"]:    # Change this here to see the different categories (as per the kod categories string values...
+        # "810g9gol" is empty and so is broken)
         playername = players[p["players"][0]["id"]]
         kodAnyBoard.addRun(Run(playername["names"]["international"], p["times"]["primary_t"]))
     
