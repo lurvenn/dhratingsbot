@@ -4,9 +4,13 @@ class Run:
 
         self.time = float(time)
         self.score = 0
+        self.timeBonus = False
+    
 
     def __str__(self):
-        return "runner: " + self.runner + ", time: " + str(self.time) + ", score: " + str(self.score)
+        bonus = 0
+        if self.timeBonus == True: bonus = 5000
+        return "runner: " + self.runner + ", time: " + str(self.time) + ", score: " + str(self.score + bonus)
 
     def __gt__(self, other):
         return self.time > other.getTime()
@@ -25,3 +29,9 @@ class Run:
 
     def setScore(self, score):
         self.score = int(score)
+
+    def setTimeBonus(self, boolio):
+        self.timeBonus = bool(boolio)
+
+    def getTimeBonus(self):
+        return self.timeBouns

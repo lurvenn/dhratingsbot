@@ -43,39 +43,44 @@ def main():
             f"category/{p.id}?embed=variables,players,platform"
         )
     
+    # get all player names for dh1 into a dict [id]:name
     players = {}
     for p2 in dh1_runs.keys():
         for p in dh1_runs[p2]["players"]["data"]:
-            if p["rel"] != "guest":
+            if p["rel"] == "user":
                 players[p["id"]] = p 
-    # for k in players.keys():
-    #     print(players[k]["names"]["international"])
 
         
-    ## Kod handling
+    # Kod handling
 
     kod = dh1_runs["Knife of Dunwall"]
 
     kod_variables = kod["variables"]["data"]
 
     assert len(kod_variables) == 1
-    kod_category = kod_variables[0]
+
+
+    
 
     kod_category_names =  {'5q8jr6yl': 'Any%', 'mlnpkwo1': 'All Collectibles', '810g9gol': 'Non-Lethal / Ghost', '9qjvev7q': '100%'}
+    dish_category_names = {'21gvo861': 'Any%', 'jqz8yp2q': 'All Collectibles', 'klrv6poq': 'Non-Lethal / Ghost', '21d9ozpq': '100%', '4qyd8p6q': 'Legacy'}
+    bw_category_names = {'jq6ngnvl': 'Any%', '5lmvwv8l': 'All Collectibles', '81wzrzm1': 'Non-Lethal / Ghost', 'zqok2k5l': '100%'}
+    
     kod_categories = {p : [] for p in kod_category_names.keys() }
     
-    for run in kod["runs"]:
-        run = run["run"]
+    # kod_category = kod_variables[0]
+    # for run in kod["runs"]:
+    #     run = run["run"]
 
-        category_value = run["values"][kod_category["id"]]
-        label = kod_category["values"]["values"][category_value]["label"]
+    #     category_value = run["values"][kod_category["id"]]
+    #     label = kod_category["values"]["values"][category_value]["label"]
 
-        runner_id = run["players"][0]["id"]
-        runner_name = players[runner_id]["names"]["international"]
+    #     runner_id = run["players"][0]["id"]
+    #     runner_name = players[runner_id]["names"]["international"]
 
-        time = run["times"]["primary_t"]
-        # TODO: Also handle guests?
-        print(f"{label}: {runner_name}, {time}")
+    #     time = run["times"]["primary_t"]
+    #     # TODO: Also handle guests?
+    #     print(f"{label}: {runner_name}, {time}")
 
     for run in kod["runs"]:
         run = run["run"]
@@ -83,12 +88,13 @@ def main():
             if list(run["values"].values())[0] == key:
                 kod_categories[key].append(run)
     
-    testboard = Board()
+    kodAnyBoard = Board(2)
     for p in kod_categories["5q8jr6yl"]:
         playername = players[p["players"][0]["id"]]
-        testboard.addRun(Run(playername["names"]["international"], p["times"]["primary_t"]))
-    print(testboard)
-    # print(kod.runs[1][comment])
+        kodAnyBoard.addRun(Run(playername["names"]["international"], p["times"]["primary_t"]))
+    print(kodAnyBoard)
+
+    # print(kod.runs[1][comment])S
     # print(game.categories[1].runs)
 
     # print("lmao " + str(game.categories[1]))
