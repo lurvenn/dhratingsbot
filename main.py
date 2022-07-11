@@ -34,6 +34,7 @@ def main():
     # Kod handling
 
     kod = dh1_runs["Knife of Dunwall"]
+<<<<<<< HEAD
 
     kod_categories = {p : [] for p in kod_category_names.keys() }
     
@@ -64,6 +65,30 @@ def main():
     #             for b in list(x["values"]["values"].keys()):
     #                 if list(run["values"].values())[0] == b:
     #                    kod_categories[b].append(run)
+=======
+    kod_categories = {p : [] for p in kod_category_names.keys() }
+    
+    # Category Sort: Appending of runs to each category list
+    for r in kod["runs"]:
+        run = r["run"]
+        
+        # Get run category string value
+        run_category = list(run["values"].values())[0]
+        # Get all category string values
+        categories = list(kod["variables"]["data"][0]["values"]["values"].keys())
+        
+        # Append run to category list where category values match
+        for category in categories:
+            if run_category == category:
+                kod_categories[category].append(run)
+    # End of Category Sort -Luke / Xais
+  
+    kodAnyBoard = Board(2)
+    for p in kod_categories["mlnpkwo1"]:    # Change this here to see the different categories (as per the kod categories string values...
+        # "810g9gol" is empty and so is broken)
+        playername = players[p["players"][0]["id"]]
+        kodAnyBoard.addRun(Run(playername["names"]["international"], p["times"]["primary_t"]))
+>>>>>>> b7e87c759c61461c78f68b0cc5425a975cbee43e
     
     kodAnyBoard = Board(2)
     kodACBoard = Board(2)
