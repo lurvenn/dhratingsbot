@@ -6,7 +6,6 @@ class Board:
         self.runs = []
         self.bonus = int(bonusMultiplier)
 
-
     def addRun(self, run):
         if len(self.runs) > 0:
             exists = False
@@ -15,11 +14,8 @@ class Board:
                     exists = True
             if not exists:
                 self.runs.append(run)
-
         else:
             self.runs.append(run)
-
-
 
     def __str__(self):
         self.calculateBaseScore()
@@ -38,8 +34,6 @@ class Board:
         for x in self.runs:
             if x.getScore() >= rekky.getScore()/self.bonus:
                 x.setTimeBonus(True)
-                
-
 
     def calculateBaseScore(self):
         self.runs.sort()

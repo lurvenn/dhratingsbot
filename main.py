@@ -20,6 +20,7 @@ def main():
         )
     
 
+   
     # get all player names for dh1 into a dict [id]:name
     players = {}
     for p2 in dh1_runs.keys():
@@ -36,11 +37,13 @@ def main():
 
     kod = dh1_runs["Knife of Dunwall"]
 
-    kod_variables = kod["variables"]["data"]
-
-    assert len(kod_variables) == 1
-
     kod_categories = {p : [] for p in kod_category_names.keys() }
+    
+    kod_dict = {}
+
+    for subcategory in list(kod_category_names.keys()):
+        fullsubcat = api.get(f"leaderboards/3dxz351y/category/wk6exjp2?var-2lg3r5en={subcategory}&embed=players,platform")
+        kod_dict[f"{subcategory}"] = fullsubcat["runs"]["run"]
     
     # kod_category = kod_variables[0]
     # for run in kod["runs"]:
@@ -56,16 +59,17 @@ def main():
     #     # TODO: Also handle guests?
     #     print(f"{label}: {runner_name}, {time}")
 
-    for run in kod["runs"]:
-        run = run["run"]
-        for x in kod["variables"]["data"]:
-            if x["is-subcategory"] == True:
-                for b in list(x["values"]["values"].keys()):
-                    if list(run["values"].values())[0] == b:
-                       kod_categories[b].append(run)
-            
+    # for run in kod["runs"]:
+    #     run = run["run"]
+    #     for x in kod["variables"]["data"]:
+    #         if x["is-subcategory"] == True:
+    #             for b in list(x["values"]["values"].keys()):
+    #                 if list(run["values"].values())[0] == b:
+    #                    kod_categories[b].append(run)
+    
     kodAnyBoard = Board(2)
-    for p in kod_categories["5q8jr6yl"]:
+
+    for p in kod_dict["810g9gol"]:
         playername = players[p["players"][0]["id"]]
         kodAnyBoard.addRun(Run(playername["names"]["international"], p["times"]["primary_t"]))
     
