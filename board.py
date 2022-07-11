@@ -35,6 +35,12 @@ class Board:
             if x.getScore() >= rekky.getScore()/self.bonus:
                 x.setTimeBonus(True)
 
+    def getRuns(self):
+        self.calculateBaseScore()
+        self.calculateBonus()
+        return self.runs
+
+
     def calculateBaseScore(self):
         self.runs.sort()
         comp= Run("mathtest",9999999999999999)

@@ -19,8 +19,6 @@ def main():
             f"category/{p.id}?embed=variables,players,platform"
         )
     
-
-   
     # get all player names for dh1 into a dict [id]:name
     players = {}
     for p2 in dh1_runs.keys():
@@ -43,7 +41,7 @@ def main():
 
     for subcategory in list(kod_category_names.keys()):
         fullsubcat = api.get(f"leaderboards/3dxz351y/category/wk6exjp2?var-2lg3r5en={subcategory}&embed=players,platform")
-        kod_dict[f"{subcategory}"] = fullsubcat["runs"]["run"]
+        kod_dict[f"{subcategory}"] = fullsubcat["runs"]
     
     # kod_category = kod_variables[0]
     # for run in kod["runs"]:
@@ -68,12 +66,56 @@ def main():
     #                    kod_categories[b].append(run)
     
     kodAnyBoard = Board(2)
+    kodACBoard = Board(2)
+    kodNLGBoard = Board(2)
+    kodHundoBoard = Board(2)
+
+    for p in kod_dict["5q8jr6yl"]:
+        playername = players[p["run"]["players"][0]["id"]]
+        kodAnyBoard.addRun(Run(playername["names"]["international"], p["run"]["times"]["primary_t"]))
+    
+    for p in kod_dict["mlnpkwo1"]:
+        playername = players[p["run"]["players"][0]["id"]]
+        kodACBoard.addRun(Run(playername["names"]["international"], p["run"]["times"]["primary_t"]))
 
     for p in kod_dict["810g9gol"]:
-        playername = players[p["players"][0]["id"]]
-        kodAnyBoard.addRun(Run(playername["names"]["international"], p["times"]["primary_t"]))
-    
-    print(kodAnyBoard)
+        playername = players[p["run"]["players"][0]["id"]]
+        kodNLGBoard.addRun(Run(playername["names"]["international"], p["run"]["times"]["primary_t"]))
+
+    for p in kod_dict["9qjvev7q"]:
+        playername = players[p["run"]["players"][0]["id"]]
+        kodHundoBoard.addRun(Run(playername["names"]["international"], p["run"]["times"]["primary_t"]))
+
+    kodtable = {}
+    marklist = {}
+
+    for player in list(players.values()):
+        score = 0
+        for run in kodAnyBoard.getRuns():
+            if player["names"]["international"] == run.getRunner():
+                score += run.getScore()
+        
+        for run in kodACBoard.getRuns():
+            if player["names"]["international"] == run.getRunner():
+                score += run.getScore()
+        
+        for run in kodNLGBoard.getRuns():
+            if player["names"]["international"] == run.getRunner():
+                score += run.getScore()
+        
+        for run in kodHundoBoard.getRuns():
+            if player["names"]["international"] == run.getRunner():
+                score += run.getScore()
+        
+        if score > 0 :
+            kodtable[player["names"]["international"]] = score
+            marklist = sorted(kodtable.items(), key=lambda x:x[1], reverse = True)
+            sortdict = dict(marklist)
+
+    print("Kod Scores succcaaas: \n")
+    for i in range(len(list(sortdict.values()))):
+        print(f"{i+1}   {list(sortdict.keys())[i]} {list(sortdict.values())[i]}")
+
 
 if __name__ == "__main__":
     main()
