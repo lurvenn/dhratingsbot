@@ -202,7 +202,7 @@ def main():
             tempdict[player["names"]["international"]] = score
             game_dict = dict(sorted(tempdict.items(), key=lambda x:x[1], reverse = True))
 
-    print("Kod Scores succcaaas: \n")
+    print("Scores succcaaas: \n")
     for i in range(len(list(game_dict.values()))):
         print(f"{i+1}   {list(game_dict.keys())[i]} {list(game_dict.values())[i]}")
 
