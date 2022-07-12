@@ -23,17 +23,21 @@ class Board:
 
         output = "Board: \n"
         i = 0
-        for x in self.runs:
-            i+=1
-            output+= str(i) +  " " +str(x) + "\n"
+        if len(self.runs) > 0:    
+            for x in self.runs:
+                i+=1
+                output+= str(i) +  " " +str(x) + "\n"
+        else:
+            output = "empty board"
         return output
 
     # Bonus based on your relative time to rekky, 5k added if run is faster than than 1/bonus compared to rekky
     def calculateBonus(self):
-        rekky = sorted(self.runs)[0]
-        for x in self.runs:
-            if x.getScore() >= rekky.getScore()/self.bonus:
-                x.setTimeBonus(True)
+        if len(self.runs) != 0:
+            rekky = sorted(self.runs)[0]
+            for x in self.runs:
+                if x.getScore() >= rekky.getScore()/self.bonus:
+                    x.setTimeBonus(True)
 
     def getRuns(self):
         self.calculateBaseScore()

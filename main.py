@@ -18,7 +18,7 @@ def main():
             f"leaderboards/{game.id}/"
             f"category/{p.id}?embed=variables,players,platform"
         )
-    
+
     # get all player names for dh1 into a dict [id]:name
     players = {}
     for p2 in dh1_runs.keys():
@@ -26,70 +26,44 @@ def main():
             if p["rel"] == "user":
                 players[p["id"]] = p 
 
+    # category ids
+    # dish = '5dw6mp02'
+    # kod = 'wk6exjp2'
+    # bw = 'n2y9p11d'
 
+    category_names = {
+        'wk6exjp2' : {'5q8jr6yl': 'Any%', 'mlnpkwo1': 'All Collectibles', '810g9gol': 'Non-Lethal / Ghost', '9qjvev7q': '100%'},
+        '5dw6mp02' : {'21gvo861': 'Any%', 'jqz8yp2q': 'All Collectibles', 'klrv6poq': 'Non-Lethal / Ghost', '21d9ozpq': '100%', '4qyd8p6q': 'Legacy'},
+        'n2y9p11d' : {'jq6ngnvl': 'Any%', '5lmvwv8l': 'All Collectibles', '81wzrzm1': 'Non-Lethal / Ghost', 'zqok2k5l': '100%'},
+    }   
     kod_category_names =  {'5q8jr6yl': 'Any%', 'mlnpkwo1': 'All Collectibles', '810g9gol': 'Non-Lethal / Ghost', '9qjvev7q': '100%'}
     dish_category_names = {'21gvo861': 'Any%', 'jqz8yp2q': 'All Collectibles', 'klrv6poq': 'Non-Lethal / Ghost', '21d9ozpq': '100%', '4qyd8p6q': 'Legacy'}
     bw_category_names = {'jq6ngnvl': 'Any%', '5lmvwv8l': 'All Collectibles', '81wzrzm1': 'Non-Lethal / Ghost', 'zqok2k5l': '100%'}
     
     # Kod handling
 
-    kod = dh1_runs["Knife of Dunwall"]
-<<<<<<< HEAD
-
-    kod_categories = {p : [] for p in kod_category_names.keys() }
-    
     kod_dict = {}
+    # for category in list(category_names.keys()):
+    #     for subcategory in list(kod_category_names.keys()):
+    #         fullsubcat = api.get(f"leaderboards/3dxz351y/category/wk6exjp2?var-2lg3r5en={subcategory}&embed=players")
+    #         kod_dict[f"{subcategory}"] = fullsubcat["runs"]
+
 
     for subcategory in list(kod_category_names.keys()):
-        fullsubcat = api.get(f"leaderboards/3dxz351y/category/wk6exjp2?var-2lg3r5en={subcategory}&embed=players,platform")
+        fullsubcat = api.get(f"leaderboards/3dxz351y/category/wk6exjp2?var-2lg3r5en={subcategory}&embed=players")
         kod_dict[f"{subcategory}"] = fullsubcat["runs"]
+   
+    dish_dict = {}
+    for subcategory in list(dish_category_names.keys()):
+        fullsubcat = api.get(f"leaderboards/3dxz351y/category/5dw6mp02?var-789x6138={subcategory}&embed=players")
+        dish_dict[f"{subcategory}"] = fullsubcat["runs"]
     
-    # kod_category = kod_variables[0]
-    # for run in kod["runs"]:
-    #     run = run["run"]
-
-    #     category_value = run["values"][kod_category["id"]]
-    #     label = kod_category["values"]["values"][category_value]["label"]
-
-    #     runner_id = run["players"][0]["id"]
-    #     runner_name = players[runner_id]["names"]["international"]
-
-    #     time = run["times"]["primary_t"]
-    #     # TODO: Also handle guests?
-    #     print(f"{label}: {runner_name}, {time}")
-
-    # for run in kod["runs"]:
-    #     run = run["run"]
-    #     for x in kod["variables"]["data"]:
-    #         if x["is-subcategory"] == True:
-    #             for b in list(x["values"]["values"].keys()):
-    #                 if list(run["values"].values())[0] == b:
-    #                    kod_categories[b].append(run)
-=======
-    kod_categories = {p : [] for p in kod_category_names.keys() }
-    
-    # Category Sort: Appending of runs to each category list
-    for r in kod["runs"]:
-        run = r["run"]
-        
-        # Get run category string value
-        run_category = list(run["values"].values())[0]
-        # Get all category string values
-        categories = list(kod["variables"]["data"][0]["values"]["values"].keys())
-        
-        # Append run to category list where category values match
-        for category in categories:
-            if run_category == category:
-                kod_categories[category].append(run)
-    # End of Category Sort -Luke / Xais
+    bw_dict = {}
+    for subcategory in list(bw_category_names.keys()):
+        fullsubcat = api.get(f"leaderboards/3dxz351y/category/n2y9p11d?var-wl3109v8={subcategory}&embed=players")
+        bw_dict[f"{subcategory}"] = fullsubcat["runs"]
+ 
   
-    kodAnyBoard = Board(2)
-    for p in kod_categories["mlnpkwo1"]:    # Change this here to see the different categories (as per the kod categories string values...
-        # "810g9gol" is empty and so is broken)
-        playername = players[p["players"][0]["id"]]
-        kodAnyBoard.addRun(Run(playername["names"]["international"], p["times"]["primary_t"]))
->>>>>>> b7e87c759c61461c78f68b0cc5425a975cbee43e
-    
     kodAnyBoard = Board(2)
     kodACBoard = Board(2)
     kodNLGBoard = Board(2)
@@ -111,35 +85,126 @@ def main():
         playername = players[p["run"]["players"][0]["id"]]
         kodHundoBoard.addRun(Run(playername["names"]["international"], p["run"]["times"]["primary_t"]))
 
-    kodtable = {}
-    marklist = {}
+    # dishonored cat
 
+    dishAnyBoard = Board(2)
+    dishACBoard = Board(2)
+    dishNLGBoard = Board(2)
+    dishHundoBoard = Board(2)
+    dishLegacyBoard = Board(2)
+
+    
+
+    for p in dish_dict["21gvo861"]:
+        if p["run"]["players"][0]["rel"] == "user":
+            playername = players[p["run"]["players"][0]["id"]]
+            dishAnyBoard.addRun(Run(playername["names"]["international"], p["run"]["times"]["primary_t"]))
+
+    for p in dish_dict["jqz8yp2q"]:
+        if p["run"]["players"][0]["rel"] == "user":
+            playername = players[p["run"]["players"][0]["id"]]
+            dishACBoard.addRun(Run(playername["names"]["international"], p["run"]["times"]["primary_t"]))
+        
+    for p in dish_dict["klrv6poq"]:
+        if p["run"]["players"][0]["rel"] == "user":
+
+            playername = players[p["run"]["players"][0]["id"]]
+            dishNLGBoard.addRun(Run(playername["names"]["international"], p["run"]["times"]["primary_t"]))
+
+    for p in dish_dict["21d9ozpq"]:
+        if p["run"]["players"][0]["rel"] == "user":
+
+            playername = players[p["run"]["players"][0]["id"]]
+            dishHundoBoard.addRun(Run(playername["names"]["international"], p["run"]["times"]["primary_t"]))
+    
+    for p in dish_dict["4qyd8p6q"]:
+        if p["run"]["players"][0]["rel"] == "user":
+            playername = players[p["run"]["players"][0]["id"]]
+            dishLegacyBoard.addRun(Run(playername["names"]["international"], p["run"]["times"]["primary_t"]))
+
+    # bw
+    
+    bwAnyBoard = Board(2)
+    bwACBoard = Board(2)
+    bwNLGBoard = Board(2)
+    bwHundoBoard = Board(2)
+
+    bw_category_names = {'jq6ngnvl': 'Any%', '5lmvwv8l': 'All Collectibles', '81wzrzm1': 'Non-Lethal / Ghost', 'zqok2k5l': '100%'}
+    
+    for p in bw_dict["jq6ngnvl"]:
+        if p["run"]["players"][0]["rel"] == "user":
+            playername = players[p["run"]["players"][0]["id"]]
+            bwAnyBoard.addRun(Run(playername["names"]["international"], p["run"]["times"]["primary_t"]))
+    
+    for p in bw_dict["5lmvwv8l"]:
+        if p["run"]["players"][0]["rel"] == "user":
+            playername = players[p["run"]["players"][0]["id"]]
+            bwACBoard.addRun(Run(playername["names"]["international"], p["run"]["times"]["primary_t"]))
+
+    for p in bw_dict["81wzrzm1"]:
+        if p["run"]["players"][0]["rel"] == "user":
+            playername = players[p["run"]["players"][0]["id"]]
+            bwNLGBoard.addRun(Run(playername["names"]["international"], p["run"]["times"]["primary_t"]))    
+
+    for p in bw_dict["zqok2k5l"]:
+        if p["run"]["players"][0]["rel"] == "user":
+            playername = players[p["run"]["players"][0]["id"]]
+            bwHundoBoard.addRun(Run(playername["names"]["international"], p["run"]["times"]["primary_t"]))
+    
+    game_dict = {}
+    tempdict = {}
     for player in list(players.values()):
         score = 0
+        
         for run in kodAnyBoard.getRuns():
             if player["names"]["international"] == run.getRunner():
                 score += run.getScore()
-        
         for run in kodACBoard.getRuns():
             if player["names"]["international"] == run.getRunner():
                 score += run.getScore()
-        
         for run in kodNLGBoard.getRuns():
             if player["names"]["international"] == run.getRunner():
                 score += run.getScore()
-        
         for run in kodHundoBoard.getRuns():
             if player["names"]["international"] == run.getRunner():
                 score += run.getScore()
+
+        for run in dishAnyBoard.getRuns():
+            if player["names"]["international"] == run.getRunner():
+                score += run.getScore()
+        for run in dishACBoard.getRuns():
+            if player["names"]["international"] == run.getRunner():
+                score += run.getScore()
+        for run in dishNLGBoard.getRuns():
+            if player["names"]["international"] == run.getRunner():
+                score += run.getScore()
+        for run in dishHundoBoard.getRuns():
+            if player["names"]["international"] == run.getRunner():
+                score += run.getScore()
+        for run in dishLegacyBoard.getRuns():
+            if player["names"]["international"] == run.getRunner():
+                score += run.getScore()
         
+        for run in bwAnyBoard.getRuns():
+            if player["names"]["international"] == run.getRunner():
+                score += run.getScore()
+        for run in bwACBoard.getRuns():
+            if player["names"]["international"] == run.getRunner():
+                score += run.getScore()
+        for run in bwNLGBoard.getRuns():
+            if player["names"]["international"] == run.getRunner():
+                score += run.getScore()
+        for run in bwHundoBoard.getRuns():
+            if player["names"]["international"] == run.getRunner():
+                score += run.getScore()
+
         if score > 0 :
-            kodtable[player["names"]["international"]] = score
-            marklist = sorted(kodtable.items(), key=lambda x:x[1], reverse = True)
-            sortdict = dict(marklist)
+            tempdict[player["names"]["international"]] = score
+            game_dict = dict(sorted(tempdict.items(), key=lambda x:x[1], reverse = True))
 
     print("Kod Scores succcaaas: \n")
-    for i in range(len(list(sortdict.values()))):
-        print(f"{i+1}   {list(sortdict.keys())[i]} {list(sortdict.values())[i]}")
+    for i in range(len(list(game_dict.values()))):
+        print(f"{i+1}   {list(game_dict.keys())[i]} {list(game_dict.values())[i]}")
 
 
 if __name__ == "__main__":
